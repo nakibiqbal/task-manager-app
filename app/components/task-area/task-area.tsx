@@ -8,6 +8,7 @@ import SearchInput from "./search-input";
 import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
 import PriorityDropDown from "../drop-down/priority-dropDown";
+import StatusDropDown from "../drop-down/status-dropDown";
 
 export default function TaskArea() {
   return (
@@ -18,8 +19,8 @@ export default function TaskArea() {
             <div className="flex items-center gap-2">
               <SearchInput />
               {/* status drop down */}
+              <StatusDropDown />
               {/* priority drop down */}
-
               <PriorityDropDown />
 
               <Button variant={"ghost"} className="h-10">
