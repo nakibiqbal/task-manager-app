@@ -7,6 +7,7 @@ import {
 import SearchInput from "./search-input";
 import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
+import PriorityDropDown from "../drop-down/priority-dropDown";
 
 export default function TaskArea() {
   return (
@@ -18,6 +19,9 @@ export default function TaskArea() {
               <SearchInput />
               {/* status drop down */}
               {/* priority drop down */}
+
+              <PriorityDropDown />
+
               <Button variant={"ghost"} className="h-10">
                 <span>Reset</span>
                 <IoCloseSharp />
