@@ -18,6 +18,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { CommandEmpty } from "cmdk";
+import {
+  ArrowUpCircle,
+  CheckCircle2,
+  Circle,
+  HelpCircle,
+  XCircle,
+} from "lucide-react";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import { GoPlusCircle } from "react-icons/go";
@@ -32,27 +39,27 @@ const statuses: Status[] = [
   {
     value: "backlog",
     label: "Backlog",
-    icon: GoPlusCircle,
+    icon: HelpCircle,
   },
   {
     value: "todo",
     label: "Todo",
-    icon: GoPlusCircle,
+    icon: Circle,
   },
   {
     value: "in progress",
     label: "In Progress",
-    icon: GoPlusCircle,
+    icon: ArrowUpCircle,
   },
   {
     value: "done",
     label: "Done",
-    icon: GoPlusCircle,
+    icon: CheckCircle2,
   },
   {
     value: "canceled",
     label: "Canceled",
-    icon: GoPlusCircle,
+    icon: XCircle,
   },
 ];
 
