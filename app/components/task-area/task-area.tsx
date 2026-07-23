@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
 import PriorityDropDown from "../drop-down/priority-dropDown";
 import StatusDropDown from "../drop-down/status-dropDown";
+import { ViewColumnDropDown } from "../drop-down/view-columns-dropDown";
 
 export default function TaskArea() {
   return (
@@ -29,7 +30,10 @@ export default function TaskArea() {
               </Button>
             </div>
 
-            <div>{/* dropdown view coloumn */}OK</div>
+            <div>
+              {/* dropdown view coloumn */}
+              <ViewColumnDropDown />
+            </div>
           </div>
         </CardHeader>
         <CardContent>{/* table */}</CardContent>
