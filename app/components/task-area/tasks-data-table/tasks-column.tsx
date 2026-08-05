@@ -27,6 +27,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { IoArrowBack, IoArrowDown, IoArrowUp } from "react-icons/io5";
+import { TaskDropDown } from "../task-drop-down/task-drop-down";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -185,6 +186,11 @@ export const columns: ColumnDef<Task>[] = [
       const createdAt = row.original.createdAt;
       return <span>{formatDate(createdAt)}</span>;
     },
+  },
+  {
+    accessorKey: "actions",
+    header: "",
+    cell: () => <TaskDropDown />,
   },
   // {
   //   id: "actions",
