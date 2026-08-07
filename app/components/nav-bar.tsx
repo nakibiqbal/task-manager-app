@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../mode-toggle";
 import { ListTodo } from "lucide-react";
+import TaskDialog from "./task-dialog/task-dialog";
 
 export default function NavBar() {
   return (
@@ -10,7 +10,7 @@ export default function NavBar() {
       <AppNameLogo />
 
       <div className="flex justify-center items-center gap-3">
-        <Button size="lg">Add New Task</Button>
+        <TaskDialog />
         <ModeToggle />
       </div>
     </div>
