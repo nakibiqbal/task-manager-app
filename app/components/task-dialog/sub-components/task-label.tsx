@@ -40,7 +40,7 @@ export default function TaskLabel() {
         <SelectContent>
           <SelectGroup>
             {statuses.map((status, index) => (
-              <SelectItem key={index} value={status.value}>
+              <SelectItem key={index} value={status.value} className="py-2">
                 <span>{status.value}</span>
               </SelectItem>
             ))}

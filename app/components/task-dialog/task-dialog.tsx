@@ -13,6 +13,7 @@ import TaskTitle from "./sub-components/task-title";
 import { TaskStatus } from "./sub-components/task-status";
 import TaskPriority from "./sub-components/task-priority";
 import TaskLabel from "./sub-components/task-label";
+import { Separator } from "@/components/ui/separator";
 
 export default function TaskDialog() {
   return (
@@ -26,6 +27,8 @@ export default function TaskDialog() {
               Fill in the form to add a task
             </DialogDescription>
           </DialogHeader>
+
+          <Separator />
 
           {/* Dialog Content */}
           <div className="my-8 flex flex-col gap-8">

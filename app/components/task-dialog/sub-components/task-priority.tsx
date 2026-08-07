@@ -57,7 +57,7 @@ export default function TaskPriority() {
         <SelectContent>
           <SelectGroup>
             {statuses.map((status, index) => (
-              <SelectItem key={index} value={status.value}>
+              <SelectItem key={index} value={status.value} className="py-2">
                 <div className="flex items-center gap-2">
                   <status.icon />
                   <span>{status.value}</span>
