@@ -1,50 +1,33 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { IoCloseSharp } from "react-icons/io5";
-// import PriorityDropDown from "../drop-down/priority-dropDown";
-// import StatusDropDown from "../drop-down/status-dropDown";
-// import { ViewColumnDropDown } from "../drop-down/view-columns-dropDown";
+"use client";
+
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { TaskDataTable } from "./tasks-data-table/tasks-data-table";
 import { columns } from "./tasks-data-table/tasks-column";
-import { tasks } from "@/app/data/tasks-data";
+import { tasks as staticTasks, Task } from "@/app/data/tasks-data";
+import TableSkeleton from "./skeleton-loading";
 
 export default function TaskArea() {
-  const data = tasks;
+  const [tasks, setTasks] = useState<Task[] | null>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTasks(staticTasks);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="px-7 mb-6">
       <Card>
-        {/* <CardHeader> */}
-        {/* <div className="flex justify-between items-center"> */}
-        {/* <div className="flex items-center gap-2"> */}
-        {/* <SearchInput table={table} /> */}
-        {/* status drop down */}
-        {/* <StatusDropDown /> */}
-        {/* priority drop down */}
-        {/* <PriorityDropDown /> */}
-
-        {/* <Button variant={"ghost"} className="h-10">
-                <span>Reset</span>
-                <IoCloseSharp />
-              </Button> */}
-        {/* </div> */}
-
-        {/* <div> */}
-        {/* dropdown view coloumn */}
-        {/* <ViewColumnDropDown /> */}
-        {/* </div> */}
-        {/* </div> */}
-        {/* </CardHeader> */}
         <CardContent>
-          {/* table */}
-          <TaskDataTable columns={columns} data={data} />
+          {!tasks ? (
+            <TableSkeleton />
+          ) : (
+            <TaskDataTable columns={columns} data={tasks} />
+          )}
         </CardContent>
-        <CardFooter>{/* pagination */}</CardFooter>
       </Card>
     </div>
   );
