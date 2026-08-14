@@ -95,7 +95,11 @@ export function TaskDataTable<TData, TValue>({
           {/* priority drop down */}
           <PriorityDropDown table={table} />
 
-          <Button variant={"ghost"} className="h-10">
+          <Button
+            variant={"ghost"}
+            className="h-10"
+            onClick={() => table.resetColumnFilters()}
+          >
             <span>Reset</span>
             <IoCloseSharp />
           </Button>
