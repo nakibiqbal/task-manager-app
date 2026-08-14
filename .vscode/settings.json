@@ -1,4 +1,5 @@
 {
   "background.windowBackgrounds": ["c:/Users/Asus/Downloads/IMG_3485.png"],
-  "background.backgroundOpacity": [0.8, 0.9, 0.9, 0.9]
+  "background.backgroundOpacity": [0.9, 0.9, 0.9, 0.9],
+  "background.backgroundBlur": ["3px", "0", "0", "0"]
 }

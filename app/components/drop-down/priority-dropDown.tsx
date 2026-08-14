@@ -19,39 +19,31 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { IconType } from "react-icons";
 import { GoPlusCircle } from "react-icons/go";
-import { IoArrowBack, IoArrowDown, IoArrowUp } from "react-icons/io5";
+import { Table } from "@tanstack/react-table";
+import { priorityOptions } from "@/app/data/priority-options";
 
-type Status = {
-  value: string;
-  label: string;
-  icon: IconType;
-};
+interface PriorityDropDownProps<TData> {
+  table: Table<TData>;
+}
 
-const statuses: Status[] = [
-  {
-    value: "low",
-    label: "Low",
-    icon: IoArrowDown,
-  },
-  {
-    value: "medium",
-    label: "Medium",
-    icon: IoArrowBack,
-  },
-  {
-    value: "high",
-    label: "High",
-    icon: IoArrowUp,
-  },
-];
-
-export default function PriorityDropDown() {
+export default function PriorityDropDown<TData>({
+  table,
+}: PriorityDropDownProps<TData>) {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  console.log(selectedStatus);
+  const column = table.getColumn("priority");
+  const selected = (column?.getFilterValue() as string[]) ?? [];
+
+  const facetedCounts = column?.getFacetedUniqueValues();
+
+  function toggleValue(value: string) {
+    const updated = selected.includes(value)
+      ? selected.filter((v) => v !== value)
+      : [...selected, value];
+
+    column?.setFilterValue(updated.length > 0 ? updated : undefined);
+  }
 
   return (
     <div className="flex items-center space-x-4">
@@ -68,18 +60,27 @@ export default function PriorityDropDown() {
               <span>Priority</span>
             </div>
 
-            <Separator
-              orientation="vertical"
-              className="h-5 border-gray-300 border"
-            />
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="rounded-sm">
-                Low
-              </Badge>
-              <Badge variant="secondary" className="rounded-sm">
-                Medium
-              </Badge>
-            </div>
+            {selected.length > 0 && (
+              <>
+                <Separator
+                  orientation="vertical"
+                  className="h-5 border-gray-300 border"
+                />
+                <div className="flex items-center gap-2">
+                  {priorityOptions
+                    .filter((p) => selected.includes(p.value))
+                    .map((p) => (
+                      <Badge
+                        key={p.value}
+                        variant="secondary"
+                        className="rounded-sm"
+                      >
+                        {p.label}
+                      </Badge>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         </PopoverTrigger>
         <PopoverContent
@@ -87,36 +88,24 @@ export default function PriorityDropDown() {
           side="bottom"
           align="center"
         >
-          {/* command component */}
           <Command>
-            {/* command input */}
             <CommandInput placeholder="Change Priority..." />
-            {/* command list of items */}
             <CommandList>
               <CommandEmpty>No priority found.</CommandEmpty>
               <CommandGroup>
-                {statuses.map((status) => (
+                {priorityOptions.map((priority) => (
                   <CommandItem
-                    key={status.value}
-                    value={status.value}
+                    key={priority.value}
+                    value={priority.value}
                     className="flex justify-between"
-                    onSelect={(value) => {
-                      setSelectedStatus(
-                        statuses.find((priority) => priority.value === value) ||
-                          null,
-                      );
-                    }}
+                    onSelect={() => toggleValue(priority.value)}
                   >
                     <div className="flex items-center gap-3">
-                      {/* checkbox */}
-                      <Checkbox />
-                      {/* item icon */}
-                      <status.icon />
-                      {/* item label */}
-                      <span>{status.label}</span>
+                      <Checkbox checked={selected.includes(priority.value)} />
+                      <priority.icon />
+                      <span>{priority.label}</span>
                     </div>
-
-                    <span>23</span>
+                    <span>{facetedCounts?.get(priority.value) ?? 0}</span>
                   </CommandItem>
                 ))}
               </CommandGroup>

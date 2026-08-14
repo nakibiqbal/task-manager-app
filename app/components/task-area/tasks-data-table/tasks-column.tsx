@@ -1,9 +1,7 @@
 "use client";
 
-// import { Task } from "@/app/data/tasks-data";
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  MoreHorizontal,
   Star,
   HelpCircle,
   XCircle,
@@ -12,31 +10,12 @@ import {
   Circle,
 } from "lucide-react";
 
-// import { Button } from "@/components/ui/button";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuGroup,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
 import { Priority, Status, Task } from "@/app/data/tasks-data";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { IoArrowBack, IoArrowDown, IoArrowUp } from "react-icons/io5";
 import { TaskDropDown } from "../task-drop-down/task-drop-down";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-// export type Payment = {
-//   id: string;
-//   amount: number;
-//   status: "pending" | "processing" | "success" | "failed";
-//   email: string;
-// };
 
 function renderStatusIcons(status: Status) {
   switch (status) {
@@ -156,6 +135,7 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       );
     },
+    filterFn: "arrIncludesSome",
   },
   {
     accessorKey: "priority",
@@ -176,6 +156,7 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       );
     },
+    filterFn: "arrIncludesSome",
   },
   {
     accessorKey: "createdAt",
@@ -192,38 +173,4 @@ export const columns: ColumnDef<Task>[] = [
     header: "",
     cell: () => <TaskDropDown />,
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     // const payment = row.original;
-
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger
-  //           render={
-  //             <Button variant="ghost" className="h-8 w-8 p-0">
-  //               <span className="sr-only">Open menu</span>
-  //               <MoreHorizontal className="h-4 w-4" />
-  //             </Button>
-  //           }
-  //         />
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuGroup>
-  //             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //             <DropdownMenuItem
-  //             // onClick={() => navigator.clipboard.writeText(payment.id)}
-  //             >
-  //               Copy payment ID
-  //             </DropdownMenuItem>
-  //           </DropdownMenuGroup>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuGroup>
-  //             <DropdownMenuItem>View customer</DropdownMenuItem>
-  //             <DropdownMenuItem>View payment details</DropdownMenuItem>
-  //           </DropdownMenuGroup>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // },
 ];

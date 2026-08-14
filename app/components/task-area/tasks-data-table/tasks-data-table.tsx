@@ -8,6 +8,8 @@ import {
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -60,18 +62,15 @@ export function TaskDataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFacetedRowModel: getFacetedRowModel(), // notun
+    getFacetedUniqueValues: getFacetedUniqueValues(), // notun
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    state: { sorting, columnFilters, columnVisibility, rowSelection },
   });
 
   return (
@@ -92,9 +91,9 @@ export function TaskDataTable<TData, TValue>({
         <div className="flex items-center gap-2">
           <SearchInput table={table} />
           {/* status drop down */}
-          <StatusDropDown />
+          <StatusDropDown table={table} />
           {/* priority drop down */}
-          <PriorityDropDown />
+          <PriorityDropDown table={table} />
 
           <Button variant={"ghost"} className="h-10">
             <span>Reset</span>

@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -17,57 +18,32 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { CommandEmpty } from "cmdk";
-import {
-  ArrowUpCircle,
-  CheckCircle2,
-  Circle,
-  HelpCircle,
-  XCircle,
-} from "lucide-react";
+import { Table } from "@tanstack/react-table";
 import { useState } from "react";
-import { IconType } from "react-icons";
 import { GoPlusCircle } from "react-icons/go";
+import { statusOptions } from "@/app/data/status-options";
 
-type Status = {
-  value: string;
-  label: string;
-  icon: IconType;
-};
+interface StatusDropDownProps<TData> {
+  table: Table<TData>;
+}
 
-const statuses: Status[] = [
-  {
-    value: "backlog",
-    label: "Backlog",
-    icon: HelpCircle,
-  },
-  {
-    value: "todo",
-    label: "Todo",
-    icon: Circle,
-  },
-  {
-    value: "in progress",
-    label: "In Progress",
-    icon: ArrowUpCircle,
-  },
-  {
-    value: "done",
-    label: "Done",
-    icon: CheckCircle2,
-  },
-  {
-    value: "canceled",
-    label: "Canceled",
-    icon: XCircle,
-  },
-];
-
-export default function StatusDropDown() {
+export default function StatusDropDown<TData>({
+  table,
+}: StatusDropDownProps<TData>) {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  console.log(selectedStatus);
+  const column = table.getColumn("status");
+  const selected = (column?.getFilterValue() as string[]) ?? [];
+
+  const facetedCounts = column?.getFacetedUniqueValues();
+
+  function toggleValue(value: string) {
+    const updated = selected.includes(value)
+      ? selected.filter((v) => v !== value)
+      : [...selected, value];
+
+    column?.setFilterValue(updated.length > 0 ? updated : undefined);
+  }
 
   return (
     <div>
@@ -84,19 +60,28 @@ export default function StatusDropDown() {
               <span>Status</span>
             </div>
 
-            <Separator
-              orientation="vertical"
-              className="h-5 border-gray-300 border"
-            />
+            {selected.length > 0 && (
+              <>
+                <Separator
+                  orientation="vertical"
+                  className="h-5 border-gray-300 border"
+                />
 
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="rounded-sm">
-                Todo
-              </Badge>
-              <Badge variant="secondary" className="rounded-sm">
-                Done
-              </Badge>
-            </div>
+                <div className="flex items-center gap-2">
+                  {statusOptions
+                    .filter((s) => selected.includes(s.value))
+                    .map((s) => (
+                      <Badge
+                        key={s.value}
+                        variant="secondary"
+                        className="rounded-sm"
+                      >
+                        {s.label}
+                      </Badge>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         </PopoverTrigger>
 
@@ -108,44 +93,25 @@ export default function StatusDropDown() {
         >
           {/* command component  */}
           <Command>
-            {/* command input */}
             <CommandInput placeholder="Change Status..." />
-
-            {/* command lists */}
             <CommandList>
-              {/* command empty */}
               <CommandEmpty>No results found.</CommandEmpty>
-              {/* command group */}
               <CommandGroup>
-                {/* command items */}
-
-                {statuses.map((status) => {
-                  return (
-                    <CommandItem
-                      key={status.value}
-                      value={status.value}
-                      onSelect={(value) => {
-                        setSelectedStatus(
-                          statuses.find((status) => status.value === value) ||
-                            null,
-                        );
-                      }}
-                      className="flex justify-between"
-                    >
-                      <div className="flex items-center gap-3">
-                        {/* checkbox  */}
-                        <Checkbox />
-
-                        {/* item icon */}
-                        <status.icon />
-
-                        {/* item label */}
-                        <span>{status.label}</span>
-                      </div>
-                      <span>2</span>
-                    </CommandItem>
-                  );
-                })}
+                {statusOptions.map((status) => (
+                  <CommandItem
+                    key={status.value}
+                    value={status.value}
+                    className="flex justify-between"
+                    onSelect={() => toggleValue(status.value)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Checkbox checked={selected.includes(status.value)} />
+                      <status.icon />
+                      <span>{status.label}</span>
+                    </div>
+                    <span>{facetedCounts?.get(status.value) ?? 0}</span>
+                  </CommandItem>
+                ))}
               </CommandGroup>
             </CommandList>
           </Command>
@@ -154,3 +120,5 @@ export default function StatusDropDown() {
     </div>
   );
 }
+
+// PROBLEMMMM ---- STATUS SHOB GULA SELECT KORLE NO RESULTS DEKHACCHE
