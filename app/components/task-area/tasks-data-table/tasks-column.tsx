@@ -101,6 +101,7 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "title",
+    // The hiding functionality is disabled for this column
     enableHiding: false,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
@@ -171,6 +172,6 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "actions",
     header: "",
-    cell: () => <TaskDropDown />,
+    cell: ({ row }) => <TaskDropDown task={row.original} />,
   },
 ];

@@ -5,24 +5,29 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { BsThreeDots } from "react-icons/bs";
 import { MENU_ITEMS } from "./constants";
 import MenuItems from "./menu-items";
-import { Trash } from "lucide-react";
+import { Star, Trash } from "lucide-react";
 import SubMenuLabel from "./sub-label-menu";
 import { useState } from "react";
+import { Task } from "@/app/data/tasks-data";
+import { useTasksStore } from "@/app/hooks/useTaskStore";
+import { toast } from "sonner";
 
-export function TaskDropDown() {
+export function TaskDropDown({ task }: { task: Task }) {
   const [position, setPosition] = useState("bottom");
+  const toggleFavorite = useTasksStore((state) => state.toggleFavorite);
+
+  function handleFavoriteClick() {
+    toggleFavorite(task.taskId);
+    toast.success("Task updated!", {
+      description: "Operation completed successfully!",
+    });
+  }
 
   return (
     <DropdownMenu>
@@ -35,6 +40,15 @@ export function TaskDropDown() {
       />
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>
+          {/* Favorite */}
+          <MenuItems
+            Icon={Star}
+            label={task.isFavorite ? "Unfavorite" : "Favorite"}
+            shortcut="⌘S"
+            onClick={handleFavoriteClick}
+          />
+
+          {/* Baki item (Edit, Copy) — generic loop, ekhono kaj kore na */}
           {MENU_ITEMS.map((item) => (
             <MenuItems
               key={item.label}

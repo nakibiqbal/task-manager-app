@@ -75,17 +75,6 @@ export function TaskDataTable<TData, TValue>({
 
   return (
     <div>
-      {/* <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div> */}
-
       {/* filtering and sorting part */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">

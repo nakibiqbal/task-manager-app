@@ -1,4 +1,4 @@
-import { Copy, Edit2, Star } from "lucide-react";
+import { Copy, Edit2 } from "lucide-react";
 
 export const MENU_ITEMS = [
   {
@@ -10,11 +10,6 @@ export const MENU_ITEMS = [
     icon: Copy,
     label: "Make a Copy",
     shortcut: "⌘C",
-  },
-  {
-    icon: Star,
-    label: "Favorite",
-    shortcut: "⌘S",
   },
 ];
 
