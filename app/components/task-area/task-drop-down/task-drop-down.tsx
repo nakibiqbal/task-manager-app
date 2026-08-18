@@ -11,7 +11,7 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import { MENU_ITEMS } from "./constants";
 import MenuItems from "./menu-items";
-import { Star, Trash } from "lucide-react";
+import { Copy, Star, Trash } from "lucide-react";
 import SubMenuLabel from "./sub-label-menu";
 import { useState } from "react";
 import { Task } from "@/app/data/tasks-data";
@@ -21,10 +21,18 @@ import { toast } from "sonner";
 export function TaskDropDown({ task }: { task: Task }) {
   const [position, setPosition] = useState("bottom");
   const toggleFavorite = useTasksStore((state) => state.toggleFavorite);
+  const copyTask = useTasksStore((state) => state.copyTask);
 
   function handleFavoriteClick() {
     toggleFavorite(task.taskId);
     toast.success("Task updated!", {
+      description: "Operation completed successfully!",
+    });
+  }
+
+  function handleCopyClick() {
+    copyTask(task.taskId);
+    toast.message("Task Copied!", {
       description: "Operation completed successfully!",
     });
   }
@@ -40,12 +48,19 @@ export function TaskDropDown({ task }: { task: Task }) {
       />
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>
-          {/* Favorite */}
+          {/* Favorite Task */}
           <MenuItems
             Icon={Star}
             label={task.isFavorite ? "Unfavorite" : "Favorite"}
             shortcut="⌘S"
             onClick={handleFavoriteClick}
+          />
+          {/* Copy Task */}
+          <MenuItems
+            Icon={Copy}
+            label="Make a Copy"
+            shortcut="⌘C"
+            onClick={handleCopyClick}
           />
 
           {/* Baki item (Edit, Copy) — generic loop, ekhono kaj kore na */}
