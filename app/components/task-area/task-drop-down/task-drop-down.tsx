@@ -11,7 +11,7 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import { MENU_ITEMS } from "./constants";
 import MenuItems from "./menu-items";
-import { Copy, Star, Trash } from "lucide-react";
+import { Copy, Delete, Star, Trash } from "lucide-react";
 import SubMenuLabel from "./sub-label-menu";
 import { useState } from "react";
 import { Task } from "@/app/data/tasks-data";
@@ -22,6 +22,7 @@ export function TaskDropDown({ task }: { task: Task }) {
   const [position, setPosition] = useState("bottom");
   const toggleFavorite = useTasksStore((state) => state.toggleFavorite);
   const copyTask = useTasksStore((state) => state.copyTask);
+  const deleteTask = useTasksStore((state) => state.deleteTask);
 
   function handleFavoriteClick() {
     toggleFavorite(task.taskId);
@@ -33,6 +34,13 @@ export function TaskDropDown({ task }: { task: Task }) {
   function handleCopyClick() {
     copyTask(task.taskId);
     toast.message("Task Copied!", {
+      description: "Operation completed successfully!",
+    });
+  }
+
+  function handleDeleteClick() {
+    deleteTask(task.taskId);
+    toast.success("Task Deleted!", {
       description: "Operation completed successfully!",
     });
   }
@@ -76,12 +84,14 @@ export function TaskDropDown({ task }: { task: Task }) {
           {/* sub menu */}
           <SubMenuLabel value={position} onValueChange={setPosition} />
 
+          {/* Delete Task */}
           <DropdownMenuSeparator />
           <MenuItems
             Icon={Trash}
             label="Delete"
             shortcut="⌘Q"
             variant="destructive"
+            onClick={handleDeleteClick}
           />
         </DropdownMenuGroup>
       </DropdownMenuContent>

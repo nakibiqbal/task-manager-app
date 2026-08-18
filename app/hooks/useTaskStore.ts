@@ -6,6 +6,7 @@ interface TasksStore {
   setTasks: (tasks: Task[]) => void;
   toggleFavorite: (clickedTaskId: string) => void;
   copyTask: (clickedTaskId: string) => void;
+  deleteTask: (clickedTaskId: string) => void;
 }
 
 export const useTasksStore = create<TasksStore>((set) => ({
@@ -48,4 +49,10 @@ export const useTasksStore = create<TasksStore>((set) => ({
       };
       return { tasks: [...state.tasks, newTask] };
     }),
+
+  // DELETE STORE
+  deleteTask: (clickedTaskId) =>
+    set((state) => ({
+      tasks: state.tasks?.filter((t) => t.taskId !== clickedTaskId) ?? null,
+    })),
 }));
