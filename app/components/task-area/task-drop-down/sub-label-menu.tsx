@@ -1,5 +1,4 @@
 import {
-  DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -27,7 +26,7 @@ export default function SubMenuLabel({
         <DropdownMenuSubContent>
           <DropdownMenuRadioGroup value={value} onValueChange={onValueChange}>
             {LABEL_OPTIONS.map((option) => (
-              <DropdownMenuRadioItem key={option} value={option.toLowerCase()}>
+              <DropdownMenuRadioItem key={option} value={option}>
                 <span className="relative left-5">{option}</span>
               </DropdownMenuRadioItem>
             ))}

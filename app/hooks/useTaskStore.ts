@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Task, tasks } from "@/app/data/tasks-data";
+import { Label, Task } from "@/app/data/tasks-data";
 
 interface TasksStore {
   tasks: Task[] | null;
@@ -7,6 +7,7 @@ interface TasksStore {
   toggleFavorite: (clickedTaskId: string) => void;
   copyTask: (clickedTaskId: string) => void;
   deleteTask: (clickedTaskId: string) => void;
+  updateLabel: (clickedTaskId: string, newLabel: Label) => void;
 }
 
 export const useTasksStore = create<TasksStore>((set) => ({
@@ -54,5 +55,14 @@ export const useTasksStore = create<TasksStore>((set) => ({
   deleteTask: (clickedTaskId) =>
     set((state) => ({
       tasks: state.tasks?.filter((t) => t.taskId !== clickedTaskId) ?? null,
+    })),
+
+  // LABEL STORE
+  updateLabel: (clickedTaskId, newLabel) =>
+    set((state) => ({
+      tasks:
+        state.tasks?.map((task) =>
+          task.taskId === clickedTaskId ? { ...task, label: newLabel } : task,
+        ) ?? null,
     })),
 }));

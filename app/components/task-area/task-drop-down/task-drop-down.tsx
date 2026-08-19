@@ -11,18 +11,19 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import { MENU_ITEMS } from "./constants";
 import MenuItems from "./menu-items";
-import { Copy, Delete, Star, Trash } from "lucide-react";
+import { Copy, Star, Trash } from "lucide-react";
 import SubMenuLabel from "./sub-label-menu";
-import { useState } from "react";
-import { Task } from "@/app/data/tasks-data";
+// import { useState } from "react";
+import { Label, Task } from "@/app/data/tasks-data";
 import { useTasksStore } from "@/app/hooks/useTaskStore";
 import { toast } from "sonner";
 
 export function TaskDropDown({ task }: { task: Task }) {
-  const [position, setPosition] = useState("bottom");
+  // const [position, setPosition] = useState("bottom");
   const toggleFavorite = useTasksStore((state) => state.toggleFavorite);
   const copyTask = useTasksStore((state) => state.copyTask);
   const deleteTask = useTasksStore((state) => state.deleteTask);
+  const updateLabel = useTasksStore((state) => state.updateLabel);
 
   function handleFavoriteClick() {
     toggleFavorite(task.taskId);
@@ -42,6 +43,13 @@ export function TaskDropDown({ task }: { task: Task }) {
     deleteTask(task.taskId);
     toast.success("Task Deleted!", {
       description: "Operation completed successfully!",
+    });
+  }
+
+  function handleLabelChange(newLabel: string) {
+    updateLabel(task.taskId, newLabel as Label);
+    toast.success("Label updated!", {
+      description: `Task label changed to ${newLabel}.`,
     });
   }
 
@@ -82,7 +90,7 @@ export function TaskDropDown({ task }: { task: Task }) {
           ))}
 
           {/* sub menu */}
-          <SubMenuLabel value={position} onValueChange={setPosition} />
+          <SubMenuLabel value={task.label} onValueChange={handleLabelChange} />
 
           {/* Delete Task */}
           <DropdownMenuSeparator />
