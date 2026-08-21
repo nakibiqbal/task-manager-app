@@ -42,7 +42,7 @@ export default function TaskDialog() {
   const isLoading = useTasksStore((state) => state.isLoading);
 
   const isEditMode = !!editingTask;
-  const open = isAddOpen || isEditMode; 
+  const open = isAddOpen || isEditMode;
 
   // Connector of zod and react hook form
   const methods = useForm<TaskFormData>({
@@ -86,7 +86,13 @@ export default function TaskDialog() {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger render={<Button size="lg">Add New Task</Button>} />
+      <DialogTrigger
+        render={
+          <Button className="rounded-sm" size="lg">
+            Add New Task
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-sm max-w-4xl!">
         <DialogHeader>
           <DialogTitle className="text-xl">

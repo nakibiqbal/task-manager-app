@@ -20,7 +20,7 @@ export default function NavBar() {
 export function AppNameLogo() {
   return (
     <header className="flex gap-2 items-center">
-      <div className="bg-primary size-9 rounded-md flex justify-center items-center">
+      <div className="bg-primary size-9 rounded-sm flex justify-center items-center">
         <ListTodo className="text-white" />
       </div>
       <h1 className="text-2xl font-semibold max-md:hidden">

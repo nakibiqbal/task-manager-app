@@ -51,7 +51,7 @@ export default function StatusDropDown<TData>({
         <PopoverTrigger
           className={cn(
             buttonVariants({ variant: "outline", size: "sm" }),
-            "flex justify-start px-5 border-dashed h-10 cursor-pointer dark:bg-black",
+            "flex justify-start rounded-sm px-5 border-dashed h-10 cursor-pointer dark:bg-black",
           )}
         >
           <div className="flex items-center gap-4">

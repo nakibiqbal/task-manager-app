@@ -23,7 +23,7 @@ export default function SubMenuLabel({
         Label
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent>
+        <DropdownMenuSubContent className="dark:bg-black rounded-sm">
           <DropdownMenuRadioGroup value={value} onValueChange={onValueChange}>
             {LABEL_OPTIONS.map((option) => (
               <DropdownMenuRadioItem key={option} value={option}>

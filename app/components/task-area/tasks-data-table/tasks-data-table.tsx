@@ -94,7 +94,7 @@ export function TaskDataTable<TData, TValue>({
 
           <Button
             variant={"ghost"}
-            className="h-10"
+            className="h-10 rounded-sm"
             onClick={() => table.resetColumnFilters()}
           >
             <span>Reset</span>
@@ -109,7 +109,7 @@ export function TaskDataTable<TData, TValue>({
       </div>
 
       {table.getFilteredSelectedRowModel().rows.length === 0 ? (
-        ""   
+        ""
       ) : (
         <div className="flex items-center gap-5 text-sm text-muted-foreground">
           {/* All task selector */}
@@ -137,7 +137,7 @@ export function TaskDataTable<TData, TValue>({
       )}
 
       {/* table */}
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-sm border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

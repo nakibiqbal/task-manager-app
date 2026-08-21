@@ -39,14 +39,14 @@ export default function StatCards() {
 
 function SingleStatCard({ SingleCard }: { SingleCard: SingleCard }) {
   return (
-    <Card className="flex flex-col justify-center gap-2 p-4">
+    <Card className="flex flex-col rounded-sm justify-center gap-2 p-4">
       <div className="flex justify-between items-center">
         {/* card title */}
         <span className="text-sm font-semibold text-slate-500">
           {SingleCard.title}
         </span>
         {/* icon wrapper and the icon */}
-        <div className="size-7 rounded-md flex justify-center items-center bg-primary/25 text-primary">
+        <div className="size-7 rounded-sm flex justify-center items-center bg-primary/25 text-primary">
           <span>{SingleCard.icon}</span>
         </div>
       </div>

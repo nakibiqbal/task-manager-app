@@ -59,12 +59,12 @@ export function TaskDropDown({ task }: { task: Task }) {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="ghost" className="h-9 px-4 py-2 rounded-[6px]">
+          <Button variant="ghost" className="h-9 px-4 py-2 rounded-sm">
             <BsThreeDots className="h-4 w-4" />
           </Button>
         }
       />
-      <DropdownMenuContent className="w-56" align="end">
+      <DropdownMenuContent className="w-56 dark:bg-black" align="end">
         <DropdownMenuGroup>
           {/* Edit Task */}
           <MenuItems

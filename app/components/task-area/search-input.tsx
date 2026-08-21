@@ -10,7 +10,7 @@ export default function SearchInput<TData>({ table }: { table: Table<TData> }) {
         onChange={(event) =>
           table.getColumn("title")?.setFilterValue(event.target.value)
         }
-        className="max-w-sm"
+        className="max-w-sm rounded-sm"
       />
     </div>
   );

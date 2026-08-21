@@ -22,7 +22,7 @@ export default function TaskArea() {
 
   return (
     <div className="px-7 mb-6">
-      <Card>
+      <Card className="rounded-sm">
         <CardContent>
           {!tasks ? (
             <TableSkeleton />
