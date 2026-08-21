@@ -9,44 +9,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { TaskFormData } from "../task-dialog-schema";
 
-type Status = {
-  value: Task["label"];
-};
-
-const statuses: Status[] = [
-  { value: "Bug" },
-  { value: "Documentation" },
-  { value: "Feature" },
-];
+const labels: Task["label"][] = ["Bug", "Documentation", "Feature"];
 
 export default function TaskLabel() {
-  const [selectedStatus, setSelectedStatus] = useState<Task["label"]>("Bug");
+  const { control } = useFormContext<TaskFormData>();
 
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor="task-label" className="opacity-75 text-sm font-medium">
         Task Label
       </label>
-
-      <Select
-        value={selectedStatus}
-        onValueChange={(value) => setSelectedStatus(value as Task["label"])}
-      >
-        <SelectTrigger className="w-full h-11! rounded-[6px]">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {statuses.map((status, index) => (
-              <SelectItem key={index} value={status.value} className="py-2">
-                <span>{status.value}</span>
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <Controller
+        name="label"
+        control={control}
+        render={({ field }) => (
+          <Select value={field.value} onValueChange={field.onChange}>
+            <SelectTrigger className="w-full h-11! rounded-[6px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {labels.map((label, index) => (
+                  <SelectItem key={index} value={label} className="py-2">
+                    <span>{label}</span>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        )}
+      />
     </div>
   );
 }

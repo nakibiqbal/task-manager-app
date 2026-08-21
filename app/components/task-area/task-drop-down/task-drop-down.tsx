@@ -9,21 +9,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { BsThreeDots } from "react-icons/bs";
-import { MENU_ITEMS } from "./constants";
 import MenuItems from "./menu-items";
-import { Copy, Star, Trash } from "lucide-react";
+import { Copy, Edit2, Star, Trash } from "lucide-react";
 import SubMenuLabel from "./sub-label-menu";
-// import { useState } from "react";
 import { Label, Task } from "@/app/data/tasks-data";
 import { useTasksStore } from "@/app/hooks/useTaskStore";
 import { toast } from "sonner";
 
 export function TaskDropDown({ task }: { task: Task }) {
-  // const [position, setPosition] = useState("bottom");
   const toggleFavorite = useTasksStore((state) => state.toggleFavorite);
   const copyTask = useTasksStore((state) => state.copyTask);
   const deleteTask = useTasksStore((state) => state.deleteTask);
   const updateLabel = useTasksStore((state) => state.updateLabel);
+  const setEditingTask = useTasksStore((state) => state.setEditingTask);
 
   function handleFavoriteClick() {
     toggleFavorite(task.taskId);
@@ -53,6 +51,10 @@ export function TaskDropDown({ task }: { task: Task }) {
     });
   }
 
+  function handleEditClick() {
+    setEditingTask(task);
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -64,12 +66,12 @@ export function TaskDropDown({ task }: { task: Task }) {
       />
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>
-          {/* Favorite Task */}
+          {/* Edit Task */}
           <MenuItems
-            Icon={Star}
-            label={task.isFavorite ? "Unfavorite" : "Favorite"}
-            shortcut="⌘S"
-            onClick={handleFavoriteClick}
+            Icon={Edit2}
+            label="Edit"
+            shortcut="⌘e"
+            onClick={handleEditClick}
           />
           {/* Copy Task */}
           <MenuItems
@@ -78,17 +80,15 @@ export function TaskDropDown({ task }: { task: Task }) {
             shortcut="⌘C"
             onClick={handleCopyClick}
           />
+          {/* Favorite Task */}
+          <MenuItems
+            Icon={Star}
+            label={task.isFavorite ? "Unfavorite" : "Favorite"}
+            shortcut="⌘S"
+            onClick={handleFavoriteClick}
+          />
 
-          {/* Baki item (Edit, Copy) — generic loop, ekhono kaj kore na */}
-          {MENU_ITEMS.map((item) => (
-            <MenuItems
-              key={item.label}
-              Icon={item.icon}
-              label={item.label}
-              shortcut={item.shortcut}
-            />
-          ))}
-
+          <DropdownMenuSeparator />
           {/* sub menu */}
           <SubMenuLabel value={task.label} onValueChange={handleLabelChange} />
 
