@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { FaCheckCircle, FaExclamationTriangle, FaTasks } from "react-icons/fa";
+import { useTasksStore } from "@/app/hooks/useTaskStore";
 
 type SingleCard = {
   title: string;
@@ -10,20 +11,28 @@ type SingleCard = {
 };
 
 export default function StatCards() {
+  const tasks = useTasksStore((state) => state.tasks);
+
+  const totalTasks = tasks?.length ?? 0;
+  const completedTasks =
+    tasks?.filter((task) => task.status === "Done").length ?? 0;
+  const highPriorityTasks =
+    tasks?.filter((task) => task.priority === "High").length ?? 0;
+
   const stats: SingleCard[] = [
     {
       title: "Total Tasks",
-      value: 120,
+      value: totalTasks,
       icon: <FaTasks />,
     },
     {
       title: "Completed Tasks",
-      value: 80,
+      value: completedTasks,
       icon: <FaCheckCircle />,
     },
     {
       title: "High Priority Tasks",
-      value: 15,
+      value: highPriorityTasks,
       icon: <FaExclamationTriangle />,
     },
   ];
@@ -41,17 +50,13 @@ function SingleStatCard({ SingleCard }: { SingleCard: SingleCard }) {
   return (
     <Card className="flex flex-col rounded-sm justify-center gap-2 p-4">
       <div className="flex justify-between items-center">
-        {/* card title */}
         <span className="text-sm font-semibold text-slate-500">
           {SingleCard.title}
         </span>
-        {/* icon wrapper and the icon */}
         <div className="size-7 rounded-sm flex justify-center items-center bg-primary/25 text-primary">
           <span>{SingleCard.icon}</span>
         </div>
       </div>
-
-      {/* value */}
       <h3 className="text-3xl font-bold">{SingleCard.value}</h3>
     </Card>
   );

@@ -84,8 +84,8 @@ export function TaskDataTable<TData, TValue>({
   return (
     <div className="flex flex-col gap-5">
       {/* filtering and sorting part */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
+      <div className="flex justify-between items-center flex-wrap gap-2">
+        <div className="flex items-center flex-wrap gap-2">
           <SearchInput table={table} />
           {/* status drop down */}
           <StatusDropDown table={table} />

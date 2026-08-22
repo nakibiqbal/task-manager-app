@@ -15,7 +15,7 @@ export default function TaskArea() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTasks(staticTasks);
-    }, 1000);
+    }, 100000);
 
     return () => clearTimeout(timer);
   }, []);
