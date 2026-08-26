@@ -1,20 +1,6 @@
 "use client";
 
-import * as React from "react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { flexRender, Table as TanStackTable } from "@tanstack/react-table";
 
 import {
   Table,
@@ -35,61 +21,38 @@ import { DataTablePagination } from "./data-table-pagination";
 import { Trash, X } from "lucide-react";
 import { useTasksStore } from "@/app/hooks/useTaskStore";
 import { toast } from "sonner";
+import TableSkeleton from "../skeleton-loading";
+import { Task } from "@/app/data/tasks-data";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface TaskDataTableProps {
+  table: TanStackTable<Task>;
+  isLoading: boolean;
 }
 
-export function TaskDataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-
+export function TaskDataTable({ table, isLoading }: TaskDataTableProps) {
   const deleteTask = useTasksStore((state) => state.deleteTask);
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: { sorting, columnFilters, columnVisibility, rowSelection },
-  });
   function handleDeleteClick() {
     table
       .getFilteredSelectedRowModel()
-      .rows.forEach((row) =>
-        deleteTask((row.original as { taskId: string }).taskId),
-      );
+      .rows.forEach((row) => deleteTask(row.original.taskId));
     table.resetRowSelection(false);
     toast.success("Task Deleted!", {
       description: "Operation completed successfully!",
     });
   }
+
+  if (isLoading) {
+    return <TableSkeleton />;
+  }
+
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-7">
       {/* filtering and sorting part */}
       <div className="flex justify-between items-center flex-wrap gap-2">
         <div className="flex items-center flex-wrap gap-2">
           <SearchInput table={table} />
-          {/* status drop down */}
           <StatusDropDown table={table} />
-          {/* priority drop down */}
           <PriorityDropDown table={table} />
 
           <Button
@@ -103,7 +66,6 @@ export function TaskDataTable<TData, TValue>({
         </div>
 
         <div>
-          {/* dropdown view coloumn */}
           <ViewColumnDropDown table={table} />
         </div>
       </div>
@@ -111,10 +73,8 @@ export function TaskDataTable<TData, TValue>({
       {table.getFilteredSelectedRowModel().rows.length === 0 ? (
         ""
       ) : (
-        <div className="flex items-center gap-5 text-sm text-muted-foreground">
-          {/* All task selector */}
+        <div className="flex flex-col items-start gap-2 text-sm text-muted-foreground md:flex-row md:items-center md:gap-5">
           {table.getFilteredSelectedRowModel().rows.length} Tasks Selected
-          {/* Delete all task together */}
           <Button
             className="px-3 bg-[#e11d48] hover:bg-[#8f142f] text-white"
             size="sm"
@@ -142,18 +102,16 @@ export function TaskDataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -177,7 +135,7 @@ export function TaskDataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
                   No results.

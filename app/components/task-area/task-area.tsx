@@ -2,15 +2,34 @@
 
 import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getSortedRowModel,
+  getFilteredRowModel,
+  SortingState,
+  ColumnFiltersState,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { useState } from "react";
+
 import { TaskDataTable } from "./tasks-data-table/tasks-data-table";
 import { columns } from "./tasks-data-table/tasks-column";
-import { tasks as staticTasks } from "@/app/data/tasks-data";
-import TableSkeleton from "./skeleton-loading";
+import { tasks as staticTasks, Task } from "@/app/data/tasks-data";
 import { useTasksStore } from "@/app/hooks/useTaskStore";
+import StatCards from "../stats-cards";
 
 export default function TaskArea() {
   const tasks = useTasksStore((state) => state.tasks);
   const setTasks = useTasksStore((state) => state.setTasks);
+
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -20,15 +39,29 @@ export default function TaskArea() {
     return () => clearTimeout(timer);
   }, []);
 
+  const table = useReactTable<Task>({
+    data: tasks ?? [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: { sorting, columnFilters, columnVisibility, rowSelection },
+  });
+
   return (
-    <div className="px-7 mb-6">
+    <div className="px-7 mb-6 flex flex-col gap-12">
+      <StatCards table={table} />
+
       <Card className="rounded-sm">
         <CardContent>
-          {!tasks ? (
-            <TableSkeleton />
-          ) : (
-            <TaskDataTable columns={columns} data={tasks} />
-          )}
+          <TaskDataTable table={table} isLoading={!tasks} />
         </CardContent>
       </Card>
     </div>

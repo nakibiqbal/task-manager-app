@@ -3,7 +3,7 @@ import { Table } from "@tanstack/react-table";
 
 export default function SearchInput<TData>({ table }: { table: Table<TData> }) {
   return (
-    <div className="flex items-center py-4">
+    <div className="flex items-center">
       <Input
         placeholder="Filter By Tasks..."
         value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
