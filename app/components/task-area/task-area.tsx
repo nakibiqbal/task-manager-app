@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   useReactTable,
@@ -13,8 +13,8 @@ import {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
+  PaginationState,
 } from "@tanstack/react-table";
-import { useState } from "react";
 
 import { TaskDataTable } from "./tasks-data-table/tasks-data-table";
 import { columns } from "./tasks-data-table/tasks-column";
@@ -30,6 +30,11 @@ export default function TaskArea() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 8,
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,8 +57,22 @@ export default function TaskArea() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: { sorting, columnFilters, columnVisibility, rowSelection },
+    onPaginationChange: setPagination,
+    autoResetPageIndex: false,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+      pagination,
+    },
   });
+
+  useEffect(() => {
+    if (!columnFilters.length) return;
+
+    table.setPageIndex(0);
+  }, [columnFilters, table]);
 
   return (
     <div className="px-7 mb-6 flex flex-col gap-12">
